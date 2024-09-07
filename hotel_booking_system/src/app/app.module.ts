@@ -10,6 +10,9 @@ import { RoomViewComponent } from './room/room-view/room-view.component';
 import { HomeComponent } from './home/home/home.component';
 import { provideHttpClient, withFetch } from '@angular/common/http';
 import { RoomByHotelComponent } from './hotel/room-by-hotel/room-by-hotel.component';
+import { LocationCreateComponent } from './location/location-create/location-create.component';
+import { LocationViewComponent } from './location/location-view/location-view.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -19,11 +22,15 @@ import { RoomByHotelComponent } from './hotel/room-by-hotel/room-by-hotel.compon
     RoomCreateComponent,
     RoomViewComponent,
     HomeComponent,
-    RoomByHotelComponent
+    RoomByHotelComponent,
+    LocationCreateComponent,
+    LocationViewComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: [
     provideClientHydration(),

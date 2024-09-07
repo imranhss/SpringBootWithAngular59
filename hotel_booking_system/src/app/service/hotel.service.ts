@@ -8,22 +8,37 @@ import { Hotel } from '../model/hotel.model';
 })
 export class HotelService {
 
-   baseUrl:string="http://localhost:8080/api/hotel/";
+  baseUrl: string = "http://localhost:8080/api/hotel/";
 
   constructor(
     private httpClient: HttpClient
   ) { }
 
 
-  getAllHotel():Observable<any>{
+  getAllHotel(): Observable<any> {
 
     return this.httpClient.get(this.baseUrl);
 
   }
 
   getHotelById(hotelId: string): Observable<any> {
-    return this.httpClient.get<any>(this.baseUrl+hotelId);
+    return this.httpClient.get<any>(this.baseUrl + hotelId);
   }
+
+  createHotel(hotel: Hotel, image: File): Observable<Hotel> {
+
+    const formData = new FormData();
+
+    formData.append('hotel', new Blob([JSON.stringify(hotel)], { type: 'application/json' }));
+
+    // Append image file
+    formData.append('image', image);
+
+    return this.httpClient.post<Hotel>(this.baseUrl + "save", formData);
+
+  }
+
+
 
 
 
@@ -43,22 +58,16 @@ export class HotelService {
   // }
 
 
-  private handleError(error:any) {
+  private handleError(error: any) {
     console.error('An error occurred:', error);
     return throwError(() => new Error('test'));
   }
 
 
-  createHotel(hotel: Hotel): Observable<any> {
-
-    return this.httpClient.post(this.baseUrl+"/save", hotel);
-
-
-  }
 
   deleteHotel(id: string): Observable<any> {
     return this.httpClient.delete(this.baseUrl + "/" + id);
-    
+
   }
 
   updateHotel(id: string, hotel: Hotel): Observable<any> {

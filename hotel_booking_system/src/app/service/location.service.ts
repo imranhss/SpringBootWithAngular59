@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class LocationService {
 
-  baseUrl:string="http://localhost:8080/api/location";
+  baseUrl:string="http://localhost:8080/api/location/";
 
   constructor(
     private httpClient: HttpClient
@@ -20,6 +20,9 @@ export class LocationService {
     return this.httpClient.get(this.baseUrl);
 
   }
+
+
+  
 
 
 }

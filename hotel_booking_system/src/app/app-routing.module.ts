@@ -8,6 +8,7 @@ const routes: Routes = [
 
   {path: 'hotel', component:HotelViewComponent},
   {path: 'room/:hotelId', component:RoomByHotelComponent},
+  {path: 'hotel-create', component:HotelCreateComponent},
 ];
 
 @NgModule({

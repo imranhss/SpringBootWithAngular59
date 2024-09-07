@@ -12,7 +12,12 @@ export class Hotel {
     minPrice!:number;
     rating!: string;
 
-    location!:Location;
+    location!:{
+
+        id: number;
+        name: string;
+        image: string;
+    };
 
 
 }
