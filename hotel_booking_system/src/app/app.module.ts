@@ -8,11 +8,14 @@ import { HotelViewComponent } from './hotel/hotel-view/hotel-view.component';
 import { RoomCreateComponent } from './room/room-create/room-create.component';
 import { RoomViewComponent } from './room/room-view/room-view.component';
 import { HomeComponent } from './home/home/home.component';
-import { provideHttpClient, withFetch } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, provideHttpClient, withFetch } from '@angular/common/http';
 import { RoomByHotelComponent } from './hotel/room-by-hotel/room-by-hotel.component';
 import { LocationCreateComponent } from './location/location-create/location-create.component';
 import { LocationViewComponent } from './location/location-view/location-view.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { TokenInterceptor } from './guards/TokenInterceptor';
+import { LoginComponent } from './login/login/login.component';
+import { RegisterComponent } from './login/register/register.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +27,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     HomeComponent,
     RoomByHotelComponent,
     LocationCreateComponent,
-    LocationViewComponent
+    LocationViewComponent,
+    LoginComponent,
+    RegisterComponent
   ],
   imports: [
     BrowserModule,
@@ -36,7 +41,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     provideClientHydration(),
     provideHttpClient(
       withFetch()
-    )
+    ),
+    { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
   ],
   bootstrap: [AppComponent]
 })
