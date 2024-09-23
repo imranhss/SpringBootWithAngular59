@@ -21,17 +21,12 @@ export class AuthService {
     private http: HttpClient,
     private router: Router
   ) {
-    // Initialize the role from localStorage
-    const storedRole = this.isBrowser() ? localStorage.getItem('userRole') : null;
-    this.userRoleSubject.next(storedRole);
+    // Initialize the role from localStorage only if it's a browser
+    if (this.isBrowser()) {
+      const storedRole = localStorage.getItem('userRole');
+      this.userRoleSubject.next(storedRole);
+    }
   }
-
-  // private loadInitialRole(): void {
-  //   if (this.isBrowser()) {
-  //     const role = localStorage.getItem('userRole');
-  //     this.userRoleSubject.next(role);
-  //   }
-  // }
 
   login(email: string, password: string): Observable<AuthResponse> {
     return this.http
@@ -50,19 +45,21 @@ export class AuthService {
   }
 
   register(user: { name: string; email: string; password: string; cell: string; address: string; dob: Date; gender: string; image: string }): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(`${this.baseUrl}/register`,
-      user, { headers: this.headers }).pipe(
-        map((response: AuthResponse) => {
-          if (this.isBrowser() && response.token) {
-            localStorage.setItem('authToken', response.token); // Store JWT token
-          }
-          return response;
-        })
-      );
+    return this.http.post<AuthResponse>(`${this.baseUrl}/register`, user, { headers: this.headers }).pipe(
+      map((response: AuthResponse) => {
+        if (this.isBrowser() && response.token) {
+          localStorage.setItem('authToken', response.token); // Store JWT token
+        }
+        return response;
+      })
+    );
   }
 
   getToken(): string | null {
-    return localStorage.getItem('authToken');
+    if (this.isBrowser()) {
+      return localStorage.getItem('authToken');
+    }
+    return null;
   }
 
   decodeToken(token: string): any {
@@ -71,7 +68,10 @@ export class AuthService {
   }
 
   getUserRole(): string | null {
-    return localStorage.getItem('userRole');
+    if (this.isBrowser()) {
+      return localStorage.getItem('userRole');
+    }
+    return null;
   }
 
   isAdmin(): boolean {
@@ -107,7 +107,7 @@ export class AuthService {
   }
 
   logout(): void {
-    if (isPlatformBrowser(this.platformId)) {
+    if (this.isBrowser()) {
       localStorage.removeItem('authToken');
       localStorage.removeItem('userRole');
       this.userRoleSubject.next(null); // Clear role in BehaviorSubject
@@ -115,7 +115,15 @@ export class AuthService {
     this.router.navigate(['/login']);
   }
 
+  hasRole(roles: string[]): boolean {
+    const userRole = this.getUserRole();
+    return userRole ? roles.includes(userRole) : false;
+  }
+
   private isBrowser(): boolean {
     return isPlatformBrowser(this.platformId);
   }
+
+
+  
 }

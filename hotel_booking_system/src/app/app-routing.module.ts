@@ -10,7 +10,7 @@ import { AuthGuard } from './guards/auth.guard';
 
 const routes: Routes = [
 
-  {path: 'hotel', component:HotelViewComponent,  canActivate: [AuthGuard]},
+  {path: 'hotel', component:HotelViewComponent},
   {path: 'room/:hotelId', component:RoomByHotelComponent},
   {path: 'hotel-create', component:HotelCreateComponent,  canActivate: [AdminHotelGuard]},
   {path: 'register', component:RegisterComponent},
